@@ -18,7 +18,7 @@ On Fedora:
 `bash copy`
 
 ### Play MWO via WINE with custom build:
-'bash playmwo'
+`bash playmwo`
 
 ### Problems?
 Feel free to open an issue on this github!  Thanks for trying it.
