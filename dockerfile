@@ -67,5 +67,9 @@ workdir /home/kewluser/Proton/mwobuild
 # note what version of proton we built with
 # technically we took an additional commit from the 3.16 branch
 run bash ../configure.sh --no-steam-runtime --build-name ERLLCOOLJ3.16.7
-run make obj-wine64/Makefile obj-wine32/Makefile
-run make
+#run make obj-wine64/Makefile obj-wine32/Makefile
+run apt-get install mlocate
+run updatedb
+#run make obj-wine64/Makefile
+#run make obj-wine32/Makefile
+#run make
