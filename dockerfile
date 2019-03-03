@@ -88,4 +88,5 @@ run ln -s /usr/lib/i386-linux-gnu/libfreetype.so.6 /usr/lib/i386-linux-gnu/libfr
 #run apt-get install -y libgnutls-dev:i386
 #run apt-get install -y libjpeg-dev:i386
 #run make obj-wine32/Makefile
-run make proton
+run apt-get install -y wget
+run make dist 
