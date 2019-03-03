@@ -76,9 +76,16 @@ run apt-get install mlocate
 run updatedb
 run apt-get install -y bison
 run apt-get build-dep -y wine
-#run apt-get build-dep -y -a i386 wine
-run apt-get install -y libfreetype6-dev:i386
 run apt-get install -y libfreetype6-dev
 run make obj-wine64/Makefile
-run make obj-wine32/Makefile
-run make
+# run apt-get build-dep -y -a i386 wine
+run apt-get install -y libfreetype6-dev:i386
+run apt-get install -y libfontconfig1-dev
+# there is an issue linking in the 32-bit freetype for some reason
+run ln -s /usr/lib/i386-linux-gnu/libfreetype.so.6 /usr/lib/i386-linux-gnu/libfreetype.so
+#run apt-get install -y libxml2-dev:i386
+#run apt-get install -y libxslt-dev:i386
+#run apt-get install -y libgnutls-dev:i386
+#run apt-get install -y libjpeg-dev:i386
+#run make obj-wine32/Makefile
+run make proton
