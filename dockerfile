@@ -2,8 +2,10 @@
 # should be necessary.
 from debian:sid
 
-# copy some .rc files
+# mainly copy the .vimrc for the mouse setting to easily cut/paste into docker
 add dotvimrc /etc/vim/vimrc.local
+# the stock sources only have main instead of contrib and non-free.
+# we'll need those repos to get the build dependencies for wine.
 add sources.list /etc/apt/sources.list
 
 # get x86 packages if needed
