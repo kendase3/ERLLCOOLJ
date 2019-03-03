@@ -1,0 +1,4 @@
+#! /bin/bash
+sudo docker rm mwobox 2&> /dev/null
+# for an interactive shell.  copy artifacts or goodies out to ~/attic to preserve
+sudo docker run -it --name mwobox -v "$(pwd)"/attic:/home/kewluser/attic mwowine:latest /bin/bash
