@@ -7,6 +7,7 @@ A custom wine builder to play Mechwarrior Online
 ### Install Docker
 On Debian:
 `sudo apt install docker.io`
+
 On Fedora:
 `sudo dnf install docker`
 
