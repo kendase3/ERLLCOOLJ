@@ -20,7 +20,9 @@ run apt-get update && apt-get install -y aptitude && aptitude install -y \
 workdir /home/kewluser
 run git clone https://github.com/ValveSoftware/Proton
 #run git checkout 72499898a7da4b3d17c748e308b50d9347f4b370 # ~3.16.7
+# maybe this will resolve my FAudio/SDL issues
 workdir /home/kewluser/Proton
+run git checkout proton-3.16-6
 run git submodule update --init
 workdir /home/kewluser/Proton/wine
 add mwo.patch .
@@ -70,6 +72,6 @@ run bash ../configure.sh --no-steam-runtime --build-name ERLLCOOLJ3.16.7
 #run make obj-wine64/Makefile obj-wine32/Makefile
 run apt-get install mlocate
 run updatedb
-#run make obj-wine64/Makefile
-#run make obj-wine32/Makefile
-#run make
+run make obj-wine64/Makefile
+run make obj-wine32/Makefile
+run make
