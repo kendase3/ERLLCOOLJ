@@ -14,6 +14,7 @@ run dpkg --add-architecture i386
 # get whatever apt packages we need
 run apt-get update && apt-get install -y aptitude && aptitude install -y \
   git \
+  flex \
   vim
 
 # could be anywhere, but work in /home/someuser for similarity to normal system
@@ -45,6 +46,7 @@ run curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 run add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
 #add backports
 run echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
+run echo 'deb-src http://ftp.us.debian.org/debian/ stretch main contrib non-free' > /etc/apt/sources.list.d/wine-apt-get-src.list
 #install host build-time dependencies
 run apt-get update
 # NOTE(ken): changed multilib from 6 to 7 on sid
@@ -72,6 +74,8 @@ run bash ../configure.sh --no-steam-runtime --build-name ERLLCOOLJ3.16.7
 #run make obj-wine64/Makefile obj-wine32/Makefile
 run apt-get install mlocate
 run updatedb
+run apt-get install -y bison
+run apt-get build-dep -y wine
 run make obj-wine64/Makefile
 run make obj-wine32/Makefile
 run make
