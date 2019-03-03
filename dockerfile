@@ -1,12 +1,12 @@
 # Feel free to switch to testing if sid proves unstable; no other changes
 # should be necessary.
-from debian:sid
+from debian:stretch
 
 # mainly copy the .vimrc for the mouse setting to easily cut/paste into docker
 add dotvimrc /etc/vim/vimrc.local
 # the stock sources only have main instead of contrib and non-free.
 # we'll need those repos to get the build dependencies for wine.
-add sources.list /etc/apt/sources.list
+#add sources.list /etc/apt/sources.list
 
 # get x86 packages if needed
 run dpkg --add-architecture i386
@@ -19,6 +19,7 @@ run apt-get update && apt-get install -y aptitude && aptitude install -y \
 # could be anywhere, but work in /home/someuser for similarity to normal system
 workdir /home/kewluser
 run git clone https://github.com/ValveSoftware/Proton
+#run git checkout 72499898a7da4b3d17c748e308b50d9347f4b370 # ~3.16.7
 workdir /home/kewluser/Proton
 run git submodule update --init
 workdir /home/kewluser/Proton/wine
@@ -44,8 +45,8 @@ run add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debia
 run echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
 #install host build-time dependencies
 run apt-get update
-# NOTE(ken): changed multilib from 6 to 7
-run apt-get install -y gpgv2 gnupg2 g++ g++-7-multilib mingw-w64 git docker-ce fontforge-nox python-debian
+# NOTE(ken): changed multilib from 6 to 7 on sid
+run apt-get install -y gpgv2 gnupg2 g++ g++-multilib mingw-w64 git docker-ce fontforge-nox python-debian
 run apt-get -y -t stretch-backports install meson
 #winehq-devel is installed to pull in dependencies to run Wine
 run apt-get install -y --install-recommends winehq-devel
@@ -57,5 +58,14 @@ run update-alternatives --set x86_64-w64-mingw32-g++ `which x86_64-w64-mingw32-g
 run update-alternatives --set i686-w64-mingw32-gcc `which i686-w64-mingw32-gcc-posix`
 run update-alternatives --set i686-w64-mingw32-g++ `which i686-w64-mingw32-g++-posix`
 
-# sudo -u vagrant /home/vagrant/proton/vagrant-user-setup.sh
-# TODO: some equivalent of ^
+run apt-get install -y libsdl2-dev
+run apt-get install -y libsdl2-dev:i386
+
+# start the build
+run mkdir mwobuild
+workdir /home/kewluser/Proton/mwobuild
+# note what version of proton we built with
+# technically we took an additional commit from the 3.16 branch
+run bash ../configure.sh --no-steam-runtime --build-name ERLLCOOLJ3.16.7
+run make obj-wine64/Makefile obj-wine32/Makefile
+run make
