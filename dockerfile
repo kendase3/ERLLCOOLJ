@@ -1,4 +1,5 @@
-# <3 sid
+# Feel free to switch to testing if sid proves unstable; no other changes
+# should be necessary.
 from debian:sid
 
 # copy some .rc files
@@ -23,11 +24,6 @@ workdir /home/kewluser/wine
 add mwo.patch .
 run git checkout wine-4.3
 run git apply mwo.patch
-# hack from https://stackoverflow.com/questions/27079898/cant-compile-wine-on-64-bit-ubuntu
-#run ln -s /usr/include/freetype2 /usr/include/freetype
-#run apt-get install -y mlocate
-#run updatedb
-#run apt-get build-dep -y wine
 run ./configure --enable-win64
 run make -j4
 run mkdir /home/kewluser/wineprefix
