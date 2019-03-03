@@ -76,6 +76,9 @@ run apt-get install mlocate
 run updatedb
 run apt-get install -y bison
 run apt-get build-dep -y wine
+#run apt-get build-dep -y -a i386 wine
+run apt-get install -y libfreetype6-dev:i386
+run apt-get install -y libfreetype6-dev
 run make obj-wine64/Makefile
 run make obj-wine32/Makefile
 run make
