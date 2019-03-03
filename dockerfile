@@ -16,18 +16,46 @@ run apt-get update && apt-get install -y aptitude && aptitude install -y \
   git \
   vim
 
-run apt-get build-dep -y wine
-
 # could be anywhere, but work in /home/someuser for similarity to normal system
 workdir /home/kewluser
-run git clone git://source.winehq.org/git/wine.git
-workdir /home/kewluser/wine
-# apply mwo wine changes
+run git clone https://github.com/ValveSoftware/Proton
+workdir /home/kewluser/Proton
+run git submodule update --init
+workdir /home/kewluser/Proton/wine
 add mwo.patch .
-run git checkout wine-4.3
 run git apply mwo.patch
-run ./configure --enable-win64
-run make -j4
-run mkdir /home/kewluser/wineprefix
-env DESTDIR="/home/kewluser/wineout"
-run make install
+workdir /home/kewluser/Proton
+
+# now we 'just' have to do a proton build.  the problem is, proton was made
+# to be built with vagrant, which is a bit much to do inside of a docker container and does not seem very easily shareable with a pre-built patch like this.
+# thankfully their instructions say it should be easy to dink with in this
+# form.
+
+# this section adapted from Proton/Vagrantfile
+
+run apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+#add winehq repo
+run curl -fsSL https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
+run echo 'deb http://dl.winehq.org/wine-builds/debian stretch main' > /etc/apt/sources.list.d/winehq.list
+#add docker repo
+run curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+run add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
+#add backports
+run echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
+#install host build-time dependencies
+run apt-get update
+# NOTE(ken): changed multilib from 6 to 7
+run apt-get install -y gpgv2 gnupg2 g++ g++-7-multilib mingw-w64 git docker-ce fontforge-nox python-debian
+run apt-get -y -t stretch-backports install meson
+#winehq-devel is installed to pull in dependencies to run Wine
+run apt-get install -y --install-recommends winehq-devel
+#remove system Wine installation to ensure no accidental leakage
+run apt-get remove -y winehq-devel
+#configure posix mingw-w64 alternative for DXVK
+run update-alternatives --set x86_64-w64-mingw32-gcc `which x86_64-w64-mingw32-gcc-posix`
+run update-alternatives --set x86_64-w64-mingw32-g++ `which x86_64-w64-mingw32-g++-posix`
+run update-alternatives --set i686-w64-mingw32-gcc `which i686-w64-mingw32-gcc-posix`
+run update-alternatives --set i686-w64-mingw32-g++ `which i686-w64-mingw32-g++-posix`
+
+# sudo -u vagrant /home/vagrant/proton/vagrant-user-setup.sh
+# TODO: some equivalent of ^
