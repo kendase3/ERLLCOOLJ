@@ -1,0 +1,2 @@
+#! /bin/bash
+WINEPREFIX=~/.steam/steam/steamapps/compatdata/342200/pfx ./wineprefix/usr/local/bin/wine64 ~/.steam/steam/steamapps/common/MechWarrior\ Online/Bin64/MWOClient.exe

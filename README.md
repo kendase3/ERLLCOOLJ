@@ -18,9 +18,7 @@ On Fedora:
 `bash copy`
 
 ### Play MWO via WINE with custom build:
-- Right click 'Mechwarrior Online' in steam games
-- Choose 'SET LAUNCH OPTIONS...'
-- WINEPREFIX=/path-to-project/wineprefix/usr/local/bin %command%
+'bash playmwo'
 
 ### Problems?
 Feel free to open an issue on this github!  Thanks for trying it.
