@@ -13,7 +13,7 @@ On Fedora:
 ### Build Custom Wine:
 `bash build`
 
-### Extract Custom Wine to project dir
+### Extract Custom Wine to ./wineprefix
 `bash copy`
 
 ### Play MWO via WINE with custom build:
