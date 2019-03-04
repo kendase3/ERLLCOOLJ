@@ -60,7 +60,9 @@ run apt-get install mlocate
 run apt-get build-dep -y wine
 
 # NEW: attempt to build with vulkan support
-run apt-get install -y libvulkan-dev libvkd3d-dev
+#run apt-get install -y libvulkan-dev libvkd3d-dev
+# i think libvkd3d is just for dx12?  unclear right now but it's only on sid
+run apt-get install -y libvulkan-dev
 
 # could be anywhere, but work in /home/someuser for similarity to normal system
 workdir /home/kewluser
