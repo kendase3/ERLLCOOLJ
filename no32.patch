@@ -1,0 +1,13 @@
+diff --git a/package-release.sh b/package-release.sh
+index 937bc94..33be408 100755
+--- a/package-release.sh
++++ b/package-release.sh
+@@ -47,7 +47,7 @@ function package {
+ }
+ 
+ build_arch 64
+-build_arch 32
++#build_arch 32
+ 
+ if [ "$3" != "--no-package" ]; then
+   package
