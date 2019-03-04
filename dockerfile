@@ -83,6 +83,7 @@ workdir /home/kewluser/dxvk
 #run bash setup_dxvk.sh install
 #run git checkout proton_3.16 
 run git checkout master
+# FIXME: move up or remove
 run apt-get install -y xvfb
 #run Xvfb :99 &
 #env DISPLAY=:99
@@ -90,18 +91,10 @@ run git clone https://github.com/KhronosGroup/glslang
 run apt-get install -y cmake
 run mkdir glslang/mwobuild
 workdir /home/kewluser/dxvk/glslang/mwobuild
-#run cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
-#run cmake -DCMAKE_BUILD_TYPE=Release ..
-#run cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="." ..
 env DESTDIR=""
 run cmake -DCMAKE_BUILD_TYPE=Release ..
 run make -j4 install
-# install to system
-#run cp -r "$(pwd)/install" /
-# FIXME: it's using the DESTDIR value above
-#run cp -r /home/kewluser/wineout/home/kewluser/dxvk/glslang/mwobuild/ /usr
 
-#run apt-get install glslang-dev
 workdir /home/kewluser/dxvk
 add no32.patch .
 run git apply no32.patch
