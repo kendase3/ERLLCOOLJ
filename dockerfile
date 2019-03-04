@@ -100,6 +100,10 @@ add no32.patch .
 run git apply no32.patch
 run bash package-release.sh master ./out --no-package 
 workdir /home/kewluser/dxvk/out/dxvk-master/x64
+# FIXME(does this work?) ((no))
+# manually copy these dlls into our wine install
+run cp -r ./* /home/kewluser/wineout/usr/local/lib64/wine/
+# ^ remove?
 env PATH="$PATH:/home/kewluser/wineout/usr/local/bin"
 run mkdir /home/kewluser/wineout2
 env WINEPREFIX="/home/kewluser/wineout2"

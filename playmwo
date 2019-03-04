@@ -1,2 +1,2 @@
 #! /bin/bash
-WINEPREFIX=$(pwd)/wineprefix2 ./wineprefix/usr/local/bin/wine64 ~/.steam/steam/steamapps/common/MechWarrior\ Online/Bin64/MWOClient.exe
+DXVK_HUD=1 WINEPREFIX=$(pwd)/wineprefix2 ./wineprefix/usr/local/bin/wine64 ~/.steam/steam/steamapps/common/MechWarrior\ Online/Bin64/MWOClient.exe
