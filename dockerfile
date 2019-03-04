@@ -11,30 +11,54 @@ add dotvimrc /etc/vim/vimrc.local
 # get x86 packages if needed
 run dpkg --add-architecture i386
 
-run apt-get update
-run apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-
-run curl -fsSL https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
-run echo 'deb http://dl.winehq.org/wine-builds/debian stretch main' > /etc/apt/sources.list.d/winehq.list
-run echo 'deb-src http://ftp.us.debian.org/debian/ stretch main contrib non-free' > /etc/apt/sources.list.d/wine-apt-get-src.list
-run echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
-
-
-run apt-get update
-
-run update-alternatives --config x86_64-w64-mingw32-gcc
-run update-alternatives --config x86_64-w64-mingw32-g++
-
 # get whatever apt packages we need
 run apt-get update && apt-get install -y aptitude && aptitude install -y \
   git \
   gcc-mingw-w64 \
   g++-mingw-w64 \
   mingw-w64-x86-64-dev \
-  vim 
+  vim
+
+run apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+
+#add winehq repo
+run curl -fsSL https://dl.winehq.org/wine-builds/winehq.key | apt-key add -
+run echo 'deb http://dl.winehq.org/wine-builds/debian stretch main' > /etc/apt/sources.list.d/winehq.list
+#add docker repo
+run curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+run add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
+#add backports
+run echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
+run echo 'deb-src http://ftp.us.debian.org/debian/ stretch main contrib non-free' > /etc/apt/sources.list.d/wine-apt-get-src.list
+#install host build-time dependencies
+run apt-get update
+# NOTE(ken): changed multilib from 6 to 7 on sid
+run apt-get install -y gpgv2 gnupg2 g++ g++-multilib mingw-w64 git docker-ce fontforge-nox python-debian
+run apt-get -y -t stretch-backports install meson
+#winehq-devel is installed to pull in dependencies to run Wine
+run apt-get install -y --install-recommends winehq-devel
+#remove system Wine installation to ensure no accidental leakage
+run apt-get remove -y winehq-devel
+#configure posix mingw-w64 alternative for DXVK
+run update-alternatives --set x86_64-w64-mingw32-gcc `which x86_64-w64-mingw32-gcc-posix`
+run update-alternatives --set x86_64-w64-mingw32-g++ `which x86_64-w64-mingw32-g++-posix`
+run update-alternatives --set i686-w64-mingw32-gcc `which i686-w64-mingw32-gcc-posix`
+run update-alternatives --set i686-w64-mingw32-g++ `which i686-w64-mingw32-g++-posix`
+
+run apt-get install -y libsdl2-dev
+run apt-get install -y libsdl2-dev:i386
+
+run apt-get install -y libfreetype6-dev:i386
+run apt-get install -y libfontconfig1-dev
+
+run apt-get install -y wget
+run ln -s /usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0 /usr/lib/x86_64-linux-gnu/libSDL2.so
+run apt install libudev-dev
+run apt-get install mlocate
+
 
 run apt-get build-dep -y wine
-run apt-get build-dep -y dxvk
+#run apt-get build-dep -y dxvk
 
 # could be anywhere, but work in /home/someuser for similarity to normal system
 workdir /home/kewluser
@@ -57,5 +81,28 @@ env WINEPREFIX="$DESTDIR"
 run /home/kewluser/wineout/usr/local/bin/winecfg
 workdir /home/kewluser/dxvk
 #run bash setup_dxvk.sh install
-run git checkout v1.0
+#run git checkout proton_3.16 
+run git checkout master
+run apt-get install -y xvfb
+#run Xvfb :99 &
+#env DISPLAY=:99
+run git clone https://github.com/KhronosGroup/glslang
+run apt-get install -y cmake
+run mkdir glslang/mwobuild
+workdir /home/kewluser/dxvk/glslang/mwobuild
+#run cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
+#run cmake -DCMAKE_BUILD_TYPE=Release ..
+#run cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="." ..
+env DESTDIR=""
+run cmake -DCMAKE_BUILD_TYPE=Release ..
+run make -j4 install
+# install to system
+#run cp -r "$(pwd)/install" /
+# FIXME: it's using the DESTDIR value above
+#run cp -r /home/kewluser/wineout/home/kewluser/dxvk/glslang/mwobuild/ /usr
+
+#run apt-get install glslang-dev
+workdir /home/kewluser/dxvk
+add no32.patch .
+run git apply no32.patch
 run bash package-release.sh master ./out --no-package 
