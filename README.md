@@ -25,3 +25,7 @@ Feel free to open an issue on this github!  Thanks for trying it.
 
 ### Temporary extra work
 Right now one must open winecfg (with `bash configmwo`) and go to the libraries page and change 'd3d11' and 'dxgi' to native.
+
+### Dependencies on host system
+Requires vulkan, libldap:i386, gnutls:i386
+^ does it actually require anything other than libvulkan?

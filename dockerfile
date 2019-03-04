@@ -58,7 +58,9 @@ run apt-get install mlocate
 
 
 run apt-get build-dep -y wine
-#run apt-get build-dep -y dxvk
+
+# NEW: attempt to build with vulkan support
+run apt-get install -y libvulkan-dev
 
 # could be anywhere, but work in /home/someuser for similarity to normal system
 workdir /home/kewluser
