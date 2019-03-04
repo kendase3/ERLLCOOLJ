@@ -106,3 +106,6 @@ workdir /home/kewluser/dxvk
 add no32.patch .
 run git apply no32.patch
 run bash package-release.sh master ./out --no-package 
+workdir /home/kewluser/dxvk/out/dxvk-master/x64
+env PATH=$PATH:/home/kewluser/wineout/usr/local/bin
+run bash setup_dxvk.sh -y
