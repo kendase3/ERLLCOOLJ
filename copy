@@ -1,4 +1,5 @@
 #! /bin/bash
 sudo docker rm mwobox 2&> /dev/null
-sudo docker run -it --name mwobox -v "$(pwd)"/wineprefix:/home/kewluser/wineprefix mwowine:latest /bin/bash -c "cp -r /home/kewluser/wineout/* /home/kewluser/wineprefix"
+sudo docker run -it --name mwobox -v "$(pwd)"/wineprefix:/home/kewluser/wineprefix -v "$(pwd)"/wineprefix2:/home/kewluser/wineprefix2 mwowine:latest /bin/bash -c "cp -r /home/kewluser/wineout/* /home/kewluser/wineprefix && cp -r /home/kewluser/wineout2/* /home/kewluser/wineprefix2"
 sudo chown -R $USER:$USER wineprefix
+sudo chown -R $USER:$USER wineprefix2
