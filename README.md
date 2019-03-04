@@ -23,3 +23,5 @@ On Fedora:
 ### Problems?
 Feel free to open an issue on this github!  Thanks for trying it.
 
+### Temporary extra work
+Right now one must open winecfg (with `bash configmwo`) and go to the libraries page and change 'd3d11' and 'dxgi' to native.
