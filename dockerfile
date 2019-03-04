@@ -77,7 +77,7 @@ run make install
 # dxvk
 workdir /home/kewluser
 run git clone https://github.com/ValveSoftware/dxvk
-env WINEPREFIX="$DESTDIR"
+env WINEPREFIX="/home/kewluser/wineout2"
 run /home/kewluser/wineout/usr/local/bin/winecfg
 workdir /home/kewluser/dxvk
 #run bash setup_dxvk.sh install
@@ -105,6 +105,6 @@ workdir /home/kewluser/dxvk/out/dxvk-master/x64
 run cp -r ./* /home/kewluser/wineout/usr/local/lib64/wine/
 # ^ remove?
 env PATH="$PATH:/home/kewluser/wineout/usr/local/bin"
-run mkdir /home/kewluser/wineout2
-env WINEPREFIX="/home/kewluser/wineout2"
+# FIXME(ever needed?)
+run mkdir -p /home/kewluser/wineout2
 run bash setup_dxvk.sh -y
