@@ -96,8 +96,6 @@ run cmake -DCMAKE_BUILD_TYPE=Release ..
 run make -j4 install
 
 workdir /home/kewluser/dxvk
-add no32.patch .
-run git apply no32.patch
 run bash package-release.sh master ./out --no-package 
 workdir /home/kewluser/dxvk/out/dxvk-master/x64
 # FIXME(does this work?) ((no))
