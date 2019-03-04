@@ -78,6 +78,7 @@ run make install
 workdir /home/kewluser
 run git clone https://github.com/ValveSoftware/dxvk
 env WINEPREFIX="/home/kewluser/wineout2"
+# FIXME: this command should generate a wine prefix, no?  maybe it is doing it right in my home folder is the problem.
 run /home/kewluser/wineout/usr/local/bin/winecfg
 workdir /home/kewluser/dxvk
 #run bash setup_dxvk.sh install
@@ -97,12 +98,9 @@ run make -j4 install
 
 workdir /home/kewluser/dxvk
 run bash package-release.sh master ./out --no-package 
-workdir /home/kewluser/dxvk/out/dxvk-master/x64
-# FIXME(does this work?) ((no))
-# manually copy these dlls into our wine install
-run cp -r ./* /home/kewluser/wineout/usr/local/lib64/wine/
-# ^ remove?
 env PATH="$PATH:/home/kewluser/wineout/usr/local/bin"
-# FIXME(ever needed?)
-run mkdir -p /home/kewluser/wineout2
+workdir /home/kewluser/dxvk/out/dxvk-master/x64
+run bash setup_dxvk.sh -y
+workdir /home/kewluser/dxvk/out/dxvk-master/x32
+# whoops; i never installed 32-bit wine :~0
 run bash setup_dxvk.sh -y
