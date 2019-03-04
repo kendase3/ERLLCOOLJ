@@ -100,7 +100,7 @@ workdir /home/kewluser/dxvk
 run bash package-release.sh master ./out --no-package 
 env PATH="$PATH:/home/kewluser/wineout/usr/local/bin"
 workdir /home/kewluser/dxvk/out/dxvk-master/x64
-run bash setup_dxvk.sh -y
-workdir /home/kewluser/dxvk/out/dxvk-master/x32
-# whoops; i never installed 32-bit wine :~0
-run bash setup_dxvk.sh -y
+# FIXME: this actually makes a bum link (based on docker contents)
+# we will do it manually
+#run bash setup_dxvk.sh -y
+run cp ./*.dll /home/kewluser/wineout2/drive_c/windows/system32
