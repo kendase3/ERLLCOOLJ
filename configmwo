@@ -1,0 +1,2 @@
+#! /bin/bash
+DXVK_HUD=1 WINEPREFIX=$(pwd)/wineprefix2 ./wineprefix/usr/local/bin/winecfg
